@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mbtools-dts"
+version = "1.0.0"
+description = "Open-source Mercedes-Benz diagnostic tool combining mbtools protocol logic, the PT3G J2534 hardware driver, and the DTS-Monaco diagnostic workflow."
+readme = "README.md"
+license = { text = "GPL-3.0" }
+requires-python = ">=3.10"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: Microsoft :: Windows :: Windows 10",
+    "Operating System :: Microsoft :: Windows :: Windows 11",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Interpreters",
+    "Topic :: System :: Hardware :: Diagnostic Devices",
+    "Topic :: Scientific/Engineering :: Interface Engine/Protocol Translator",
+]
+keywords = [
+    "mercedes", "diagnostics", "uds", "can", "j2534", "pt3g", "dtc",
+    "ecu", "ecu-flashing", "variant-coding", "dts-monaco", "mbtools",
+]
+
+# The PT3G J2534 driver is the CAN hardware backend.  It is a Windows-only
+# compiled package; install it on the target machine first (cp. README), then
+# install this tool.  It is declared as an *optional* dependency with a
+# Windows-only marker so the package can be built/tested on other platforms
+# through the headless virtual adapter.
+dependencies = [
+    "pydantic>=2.0",
+    "PySide6>=6.5",
+    "python-can>=4.0",
+]
+
+[project.optional-dependencies]
+gui = ["PySide6>=6.5"]
+dev = ["pytest", "pyinstaller"]
+# Windows-only: the PT3G J2534 pass-thru driver (the CAN hardware backend).
+pt3g = ["pt3g_j2534>=1.0.0; sys_platform == 'win32'"]
+
+[project.scripts]
+mbtools-dts = "mbtools_dts.cli:main"
+mbtools-dts-gui = "mbtools_dts.gui.main_window:main"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = [
+    "mbtools_dts",
+    "mbtools_dts.hardware",
+    "mbtools_dts.protocols",
+    "mbtools_dts.logic",
+    "mbtools_dts.gui",
+]
+
+[tool.pyright]
+pythonVersion = "3.10"
