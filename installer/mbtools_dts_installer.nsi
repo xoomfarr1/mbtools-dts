@@ -8,7 +8,7 @@ Name "MBTools-DTS"
 OutFile "mbtools-dts_setup.exe"
 Unicode true
 InstallDir "$PROGRAMFILES64\MBTools-DTS"
-InstallDirRegKey "HKCU\Software\MBTools-DTS" "InstallDir"
+InstallDirRegKey HKCU "Software\MBTools-DTS" "InstallDir"
 
 !include "MUI2.nsh"
 !define MUI_ABORTWARNING
